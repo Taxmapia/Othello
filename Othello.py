@@ -1,38 +1,11 @@
 import random, sys, pygame, time, copy
-import imagenes
+import Imagenes
 import Constantes
 import os
 from pygame.locals import *
+from Constantes import *
 
-FPS = 10 # frames per second to update the screen
-WINDOWWIDTH = 640 # width of the program's window, in pixels
-WINDOWHEIGHT = 480 # height in pixels
-SPACESIZE = 50 # width & height of each space on the board, in pixels
-BOARDWIDTH = 8 # how many columns of spaces on the game board
-BOARDHEIGHT = 8 # how many rows of spaces on the game board
-WHITE_TILE = 'WHITE_TILE' # an arbitrary but unique value
-BLACK_TILE = 'BLACK_TILE' # an arbitrary but unique value
-EMPTY_SPACE = 'EMPTY_SPACE' # an arbitrary but unique value
-HINT_TILE = 'HINT_TILE' # an arbitrary but unique value
-ANIMATIONSPEED = 25 # integer from 1 to 100, higher is faster animation
 
-# Amount of space on the left & right side (XMARGIN) or above and below
-# (YMARGIN) the game board, in pixels.
-XMARGIN = int((WINDOWWIDTH - (BOARDWIDTH * SPACESIZE)) / 2)
-YMARGIN = int((WINDOWHEIGHT - (BOARDHEIGHT * SPACESIZE)) / 2)
-
-#              R    G    B
-WHITE      = (255, 255, 255)
-BLACK      = (  0,   0,   0)
-GREEN      = (  0, 155,   0)
-BRIGHTBLUE = (  0,  50, 255)
-BROWN      = (174,  94,   0)
-
-TEXTBGCOLOR1 = BRIGHTBLUE
-TEXTBGCOLOR2 = GREEN
-GRIDLINECOLOR = BLACK
-TEXTCOLOR = WHITE
-HINTCOLOR = BROWN
 
 
 def main():
@@ -40,20 +13,20 @@ def main():
 
     pygame.init()
     MAINCLOCK = pygame.time.Clock()
-    DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Flippy')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
+    BIGFONT = pygame.font.Font('freesansbold.ttf', 24)
 
     # Set up the background image.
-    boardImage = pygame.image.load(os.path.join("imagenes","madera.png")) #flyppyboard
+    boardImage = pygame.image.load(os.path.join("Imagenes","casilla.png")) #flyppyboard
     # Use smoothscale() to stretch the board image to fit the entire board:
-    boardImage = pygame.transform.smoothscale(boardImage, (BOARDWIDTH * SPACESIZE, BOARDHEIGHT * SPACESIZE))
+    boardImage = pygame.transform.smoothscale(boardImage, (FILAS * SPACESIZE, COLUMNAS * SPACESIZE))
     boardImageRect = boardImage.get_rect()
-    boardImageRect.topleft = (XMARGIN, YMARGIN)
+    boardImageRect.topleft = (Margen_x, Margen_y)
     BGIMAGE = pygame.image.load(os.path.join("imagenes","madera_oscura.png")) #flyppy brackground
     # Use smoothscale() to stretch the background image to fit the entire window:
-    BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (WINDOWWIDTH, WINDOWHEIGHT))
+    BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (WIDTH, HEIGHT))
     BGIMAGE.blit(boardImage, boardImageRect)
 
     # Run the main game.
@@ -76,12 +49,12 @@ def runGame():
     playerTile, computerTile = enterPlayerTile()
 
     # Make the Surface and Rect objects for the "New Game" and "Hints" buttons
-    newGameSurf = FONT.render('New Game', True, TEXTCOLOR, TEXTBGCOLOR2)
+    newGameSurf = FONT.render('New Game', True, COLOR_FUENTE, TXT2)
     newGameRect = newGameSurf.get_rect()
-    newGameRect.topright = (WINDOWWIDTH - 8, 10)
-    hintsSurf = FONT.render('Hints', True, TEXTCOLOR, TEXTBGCOLOR2)
+    newGameRect.topright = (WIDTH - 6, 10)
+    hintsSurf = FONT.render('Hints', True, COLOR_FUENTE, TXT2)
     hintsRect = hintsSurf.get_rect()
-    hintsRect.topright = (WINDOWWIDTH - 8, 40)
+    hintsRect.topright = (WIDTH - 6, 40)
 
     while True: # main game loop
         # Keep looping for player and computer's turns.
@@ -175,25 +148,25 @@ def runGame():
     else:
         text = 'The game was a tie!'
 
-    textSurf = FONT.render(text, True, TEXTCOLOR, TEXTBGCOLOR1)
+    textSurf = FONT.render(text, True, COLOR_FUENTE, TXT1)
     textRect = textSurf.get_rect()
-    textRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2))
+    textRect.center = (int(WIDTH / 2), int(HEIGHT / 2))
     DISPLAYSURF.blit(textSurf, textRect)
 
     # Display the "Play again?" text with Yes and No buttons.
-    text2Surf = BIGFONT.render('Play again?', True, TEXTCOLOR, TEXTBGCOLOR1)
+    text2Surf = BIGFONT.render('Play again?', True, COLOR_FUENTE, TXT1)
     text2Rect = text2Surf.get_rect()
-    text2Rect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2) + 50)
+    text2Rect.center = (int(WIDTH / 2), int(HEIGHT / 2) + 50)
 
     # Make "Yes" button.
-    yesSurf = BIGFONT.render('Yes', True, TEXTCOLOR, TEXTBGCOLOR1)
+    yesSurf = BIGFONT.render('Yes', True, COLOR_FUENTE, TXT1)
     yesRect = yesSurf.get_rect()
-    yesRect.center = (int(WINDOWWIDTH / 2) - 60, int(WINDOWHEIGHT / 2) + 90)
+    yesRect.center = (int(WIDTH / 2) - 60, int(HEIGHT / 2) + 90)
 
     # Make "No" button.
-    noSurf = BIGFONT.render('No', True, TEXTCOLOR, TEXTBGCOLOR1)
+    noSurf = BIGFONT.render('No', True, COLOR_FUENTE, TXT1)
     noRect = noSurf.get_rect()
-    noRect.center = (int(WINDOWWIDTH / 2) + 60, int(WINDOWHEIGHT / 2) + 90)
+    noRect.center = (int(WIDTH / 2) + 60, int(HEIGHT / 2) + 90)
 
     while True:
         # Process events until the user clicks on Yes or No.
@@ -214,16 +187,16 @@ def runGame():
 
 
 def translateBoardToPixelCoord(x, y):
-    return XMARGIN + x * SPACESIZE + int(SPACESIZE / 2), YMARGIN + y * SPACESIZE + int(SPACESIZE / 2)
+    return Margen_x + x * SPACESIZE + int(SPACESIZE / 2), Margen_y + y * SPACESIZE + int(SPACESIZE / 2)
 
 
 def animateTileChange(tilesToFlip, tileColor, additionalTile):
     # Draw the additional tile that was just laid down. (Otherwise we'd
     # have to completely redraw the board & the board info.)
-    if tileColor == WHITE_TILE:
-        additionalTileColor = WHITE
+    if tileColor == FICHA_B:
+        additionalTileColor = BLANCO
     else:
-        additionalTileColor = BLACK
+        additionalTileColor = NEGRO
     additionalTileX, additionalTileY = translateBoardToPixelCoord(additionalTile[0], additionalTile[1])
     pygame.draw.circle(DISPLAYSURF, additionalTileColor, (additionalTileX, additionalTileY), int(SPACESIZE / 2) - 4)
     pygame.display.update()
@@ -234,9 +207,9 @@ def animateTileChange(tilesToFlip, tileColor, additionalTile):
         elif rgbValues < 0:
             rgbValues = 0
 
-        if tileColor == WHITE_TILE:
+        if tileColor == FICHA_B:
             color = tuple([rgbValues] * 3) # rgbValues goes from 0 to 255
-        elif tileColor == BLACK_TILE:
+        elif tileColor == FICHA_N:
             color = tuple([255 - rgbValues] * 3) # rgbValues goes from 255 to 0
 
         for x, y in tilesToFlip:
@@ -252,44 +225,44 @@ def drawBoard(board):
     DISPLAYSURF.blit(BGIMAGE, BGIMAGE.get_rect())
 
     # Draw grid lines of the board.
-    for x in range(BOARDWIDTH + 1):
+    for x in range(FILAS + 1):
         # Draw the horizontal lines.
-        startx = (x * SPACESIZE) + XMARGIN
-        starty = YMARGIN
-        endx = (x * SPACESIZE) + XMARGIN
-        endy = YMARGIN + (BOARDHEIGHT * SPACESIZE)
-        pygame.draw.line(DISPLAYSURF, GRIDLINECOLOR, (startx, starty), (endx, endy))
-    for y in range(BOARDHEIGHT + 1):
+        startx = (x * SPACESIZE) + Margen_x
+        starty = Margen_y
+        endx = (x * SPACESIZE) + Margen_x
+        endy = Margen_y + (COLUMNAS * SPACESIZE)
+        pygame.draw.line(DISPLAYSURF, LINEAS, (startx, starty), (endx, endy))
+    for y in range(COLUMNAS + 1):
         # Draw the vertical lines.
-        startx = XMARGIN
-        starty = (y * SPACESIZE) + YMARGIN
-        endx = XMARGIN + (BOARDWIDTH * SPACESIZE)
-        endy = (y * SPACESIZE) + YMARGIN
-        pygame.draw.line(DISPLAYSURF, GRIDLINECOLOR, (startx, starty), (endx, endy))
+        startx = Margen_x
+        starty = (y * SPACESIZE) + Margen_y
+        endx = Margen_x + (FILAS * SPACESIZE)
+        endy = (y * SPACESIZE) + Margen_y
+        pygame.draw.line(DISPLAYSURF, LINEAS, (startx, starty), (endx, endy))
 
-    # Draw the black & white tiles or hint spots.
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
+    # Draw the NEGRO & BLANCO tiles or hint spots.
+    for x in range(FILAS):
+        for y in range(COLUMNAS):
             centerx, centery = translateBoardToPixelCoord(x, y)
-            if board[x][y] == WHITE_TILE or board[x][y] == BLACK_TILE:
-                if board[x][y] == WHITE_TILE:
-                    tileColor = WHITE
+            if board[x][y] == FICHA_B or board[x][y] == FICHA_N:
+                if board[x][y] == FICHA_B:
+                    tileColor = ROJO
                 else:
-                    tileColor = BLACK
+                    tileColor = NEGRO
                 pygame.draw.circle(DISPLAYSURF, tileColor, (centerx, centery), int(SPACESIZE / 2) - 4)
-            if board[x][y] == HINT_TILE:
-                pygame.draw.rect(DISPLAYSURF, HINTCOLOR, (centerx - 4, centery - 4, 8, 8))
+            if board[x][y] == AYUDA:
+                pygame.draw.rect(DISPLAYSURF, COLOR_AYUDA, (centerx - 4, centery - 4, 6, 6))
 
 
 def getSpaceClicked(mousex, mousey):
     # Return a tuple of two integers of the board space coordinates where
     # the mouse was clicked. (Or returns None not in any space.)
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
-            if mousex > x * SPACESIZE + XMARGIN and \
-               mousex < (x + 1) * SPACESIZE + XMARGIN and \
-               mousey > y * SPACESIZE + YMARGIN and \
-               mousey < (y + 1) * SPACESIZE + YMARGIN:
+    for x in range(FILAS):
+        for y in range(COLUMNAS):
+            if mousex > x * SPACESIZE + Margen_x and \
+               mousex < (x + 1) * SPACESIZE + Margen_x and \
+               mousey > y * SPACESIZE + Margen_y and \
+               mousey < (y + 1) * SPACESIZE + Margen_y:
                 return (x, y)
     return None
 
@@ -297,30 +270,30 @@ def getSpaceClicked(mousex, mousey):
 def drawInfo(board, playerTile, computerTile, turn):
     # Draws scores and whose turn it is at the bottom of the screen.
     scores = getScoreOfBoard(board)
-    scoreSurf = FONT.render("Player Score: %s    Computer Score: %s    %s's Turn" % (str(scores[playerTile]), str(scores[computerTile]), turn.title()), True, TEXTCOLOR)
+    scoreSurf = FONT.render("Player Score: %s    Computer Score: %s    %s's Turn" % (str(scores[playerTile]), str(scores[computerTile]), turn.title()), True, COLOR_FUENTE)
     scoreRect = scoreSurf.get_rect()
-    scoreRect.bottomleft = (10, WINDOWHEIGHT - 5)
+    scoreRect.bottomleft = (10, HEIGHT - 5)
     DISPLAYSURF.blit(scoreSurf, scoreRect)
 
 
 def resetBoard(board):
     # Blanks out the board it is passed, and sets up starting tiles.
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
-            board[x][y] = EMPTY_SPACE
+    for x in range(FILAS):
+        for y in range(COLUMNAS):
+            board[x][y] = VACIO
 
     # Add starting pieces to the center
-    board[3][3] = WHITE_TILE
-    board[3][4] = BLACK_TILE
-    board[4][3] = BLACK_TILE
-    board[4][4] = WHITE_TILE
+    board[2][2] = FICHA_B
+    board[2][3] = FICHA_N
+    board[3][2] = FICHA_N
+    board[3][3] = FICHA_B
 
 
 def getNewBoard():
     # Creates a brand new, empty board data structure.
     board = []
-    for i in range(BOARDWIDTH):
-        board.append([EMPTY_SPACE] * BOARDHEIGHT)
+    for i in range(FILAS):
+        board.append([VACIO] * COLUMNAS)
 
     return board
 
@@ -328,15 +301,15 @@ def getNewBoard():
 def isValidMove(board, tile, xstart, ystart):
     # Returns False if the player's move is invalid. If it is a valid
     # move, returns a list of spaces of the captured pieces.
-    if board[xstart][ystart] != EMPTY_SPACE or not isOnBoard(xstart, ystart):
+    if board[xstart][ystart] != VACIO or not isOnBoard(xstart, ystart):
         return False
 
     board[xstart][ystart] = tile # temporarily set the tile on the board.
 
-    if tile == WHITE_TILE:
-        otherTile = BLACK_TILE
+    if tile == FICHA_B:
+        otherTile = FICHA_N
     else:
-        otherTile = WHITE_TILE
+        otherTile = FICHA_B
 
     tilesToFlip = []
     # check each of the eight directions:
@@ -354,13 +327,10 @@ def isValidMove(board, tile, xstart, ystart):
                 x += xdirection
                 y += ydirection
                 if not isOnBoard(x, y):
-                    break # break out of while loop, continue in for loop
+                    break
             if not isOnBoard(x, y):
                 continue
             if board[x][y] == tile:
-                # There are pieces to flip over. Go in the reverse
-                # direction until we reach the original space, noting all
-                # the tiles along the way.
                 while True:
                     x -= xdirection
                     y -= ydirection
@@ -368,7 +338,7 @@ def isValidMove(board, tile, xstart, ystart):
                         break
                     tilesToFlip.append([x, y])
 
-    board[xstart][ystart] = EMPTY_SPACE # make space empty
+    board[xstart][ystart] = VACIO # make space empty
     if len(tilesToFlip) == 0: # If no tiles flipped, this move is invalid
         return False
     return tilesToFlip
@@ -376,7 +346,7 @@ def isValidMove(board, tile, xstart, ystart):
 
 def isOnBoard(x, y):
     # Returns True if the coordinates are located on the board.
-    return x >= 0 and x < BOARDWIDTH and y >= 0 and y < BOARDHEIGHT
+    return x >= 0 and x < FILAS and y >= 0 and y < COLUMNAS
 
 
 def getBoardWithValidMoves(board, tile):
@@ -384,7 +354,7 @@ def getBoardWithValidMoves(board, tile):
     dupeBoard = copy.deepcopy(board)
 
     for x, y in getValidMoves(dupeBoard, tile):
-        dupeBoard[x][y] = HINT_TILE
+        dupeBoard[x][y] = AYUDA
     return dupeBoard
 
 
@@ -392,8 +362,8 @@ def getValidMoves(board, tile):
     # Returns a list of (x,y) tuples of all valid moves.
     validMoves = []
 
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
+    for x in range(FILAS):
+        for y in range(COLUMNAS):
             if isValidMove(board, tile, x, y) != False:
                 validMoves.append((x, y))
     return validMoves
@@ -403,33 +373,28 @@ def getScoreOfBoard(board):
     # Determine the score by counting the tiles.
     xscore = 0
     oscore = 0
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
-            if board[x][y] == WHITE_TILE:
+    for x in range(FILAS):
+        for y in range(COLUMNAS):
+            if board[x][y] == FICHA_B:
                 xscore += 1
-            if board[x][y] == BLACK_TILE:
+            if board[x][y] == FICHA_N:
                 oscore += 1
-    return {WHITE_TILE:xscore, BLACK_TILE:oscore}
+    return {FICHA_B:xscore, FICHA_N:oscore}
 
 
 def enterPlayerTile():
-    # Draws the text and handles the mouse click events for letting
-    # the player choose which color they want to be.  Returns
-    # [WHITE_TILE, BLACK_TILE] if the player chooses to be White,
-    # [BLACK_TILE, WHITE_TILE] if Black.
-
     # Create the text.
-    textSurf = FONT.render('Do you want to be white or black?', True, TEXTCOLOR, TEXTBGCOLOR1)
+    textSurf = FONT.render('¿Quieres ser BLANCO o Negro?', True, COLOR_FUENTE, TXT1)
     textRect = textSurf.get_rect()
-    textRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2))
+    textRect.center = (int(WIDTH / 2), int(HEIGHT / 2))
 
-    xSurf = BIGFONT.render('White', True, TEXTCOLOR, TEXTBGCOLOR1)
+    xSurf = BIGFONT.render('BLANCO', True, COLOR_FUENTE, TXT1)
     xRect = xSurf.get_rect()
-    xRect.center = (int(WINDOWWIDTH / 2) - 60, int(WINDOWHEIGHT / 2) + 40)
+    xRect.center = (int(WIDTH / 2) - 60, int(HEIGHT / 2) + 40)
 
-    oSurf = BIGFONT.render('Black', True, TEXTCOLOR, TEXTBGCOLOR1)
+    oSurf = BIGFONT.render('NEGRO', True, COLOR_FUENTE, TXT1)
     oRect = oSurf.get_rect()
-    oRect.center = (int(WINDOWWIDTH / 2) + 60, int(WINDOWHEIGHT / 2) + 40)
+    oRect.center = (int(WIDTH / 2) + 60, int(HEIGHT / 2) + 40)
 
     while True:
         # Keep looping until the player has clicked on a color.
@@ -438,9 +403,9 @@ def enterPlayerTile():
             if event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
                 if xRect.collidepoint( (mousex, mousey) ):
-                    return [WHITE_TILE, BLACK_TILE]
+                    return [FICHA_B, FICHA_N]
                 elif oRect.collidepoint( (mousex, mousey) ):
-                    return [BLACK_TILE, WHITE_TILE]
+                    return [FICHA_N, FICHA_B]
 
         # Draw the screen.
         DISPLAYSURF.blit(textSurf, textRect)
@@ -471,9 +436,9 @@ def makeMove(board, tile, xstart, ystart, realMove=False):
 def isOnCorner(x, y):
     # Returns True if the position is in one of the four corners.
     return (x == 0 and y == 0) or \
-           (x == BOARDWIDTH and y == 0) or \
-           (x == 0 and y == BOARDHEIGHT) or \
-           (x == BOARDWIDTH and y == BOARDHEIGHT)
+           (x == FILAS and y == 0) or \
+           (x == 0 and y == COLUMNAS) or \
+           (x == FILAS and y == COLUMNAS)
 
 
 def getComputerMove(board, computerTile):

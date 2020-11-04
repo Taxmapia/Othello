@@ -1,19 +1,28 @@
-import pygame
-import os
-WIDTH , HEIGHT = 800 , 800
+FPS = 30
+WIDTH = 640
+HEIGHT = 480
+SPACESIZE = 75
+FILAS = 6
+COLUMNAS = 6
+FICHA_B = 'FICHA_B'
+FICHA_N = 'FICHA_N'
+VACIO = 'VACIO'
+AYUDA = 'AYUDA'
 
-FILAS, COLUMNAS = 6, 6
+ANIMATIONSPEED = 30
 
-CASILLA = pygame.image.load(os.path.join("imagenes","casilla.png"))
-F_A = pygame.image.load(os.path.join("imagenes","Ficha_Azul.png"))
-F_R = pygame.image.load(os.path.join("imagenes","Ficha_Roja.png"))
-
-BLOQUE_SIZE = WIDTH//COLUMNAS
+Margen_x = int((WIDTH - (FILAS * SPACESIZE)) / 2)
+Margen_y = int((HEIGHT - (COLUMNAS * SPACESIZE)) / 2)
 
 #RGB
-R = (255,0,0)
-G = (0,255,0)
-B = (0,0,255)
+ROJO = ( 200, 0 , 0)
+BLANCO = ( 175 , 175 , 175)
+NEGRO = (  0 ,   0 , 0)
+VERDE = (  0 , 155 , 0)
+GRIS = (50 , 50 , 50)
 
-NEGRO = (0,0,0)
-BLANCO = (255,255,255)
+TXT1 = GRIS
+TXT2 = VERDE
+LINEAS = NEGRO
+COLOR_FUENTE = BLANCO
+COLOR_AYUDA = VERDE
