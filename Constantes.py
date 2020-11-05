@@ -1,6 +1,10 @@
+import pygame , os
+from pygame.locals import *
+pygame.init()
+
 FPS = 30
 WIDTH = 640
-HEIGHT = 480
+HEIGHT = 500
 SPACESIZE = 75
 FILAS = 6
 COLUMNAS = 6
@@ -13,6 +17,19 @@ ANIMATIONSPEED = 30
 
 Margen_x = int((WIDTH - (FILAS * SPACESIZE)) / 2)
 Margen_y = int((HEIGHT - (COLUMNAS * SPACESIZE)) / 2)
+
+Win = pygame.display.set_mode((WIDTH, HEIGHT))
+main_clock = pygame.time.Clock()
+pygame.display.set_caption('O Othello mais increible do mundo')
+FONT = pygame.font.Font('freesansbold.ttf', 16)
+BIGFONT = pygame.font.Font('freesansbold.ttf', 24)
+boardImage = pygame.image.load(os.path.join("Imagenes","casilla.png"))
+boardImage = pygame.transform.smoothscale(boardImage, (FILAS * SPACESIZE, COLUMNAS * SPACESIZE))
+boardImageRect = boardImage.get_rect()
+boardImageRect.topleft = (Margen_x, Margen_y)
+fondo = pygame.image.load(os.path.join("imagenes","madera_oscura.png"))
+fondo = pygame.transform.smoothscale(fondo, (WIDTH, HEIGHT))
+fondo.blit(boardImage, boardImageRect)
 
 #RGB
 ROJO = ( 200, 0 , 0)
